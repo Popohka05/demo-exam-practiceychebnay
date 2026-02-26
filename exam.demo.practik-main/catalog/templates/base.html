@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ООО Обувь{% endblock %}</title>
+    <style>
+        :root {
+            --bg-main: #ffffff;
+            --bg-secondary: #7FFF00;
+            --accent: #00FA9A;
+        }
+        body { font-family: "Times New Roman", serif; margin: 0; background: var(--bg-main); }
+        a { color: #0b4f97; text-decoration: none; }
+        nav {
+            margin-bottom: 20px;
+            background: var(--bg-secondary);
+            padding: 12px 18px;
+        }
+        nav a, nav span { margin-right: 15px; }
+        nav a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+        .btn {
+            padding: 7px 12px;
+            background: var(--accent);
+            color: #000;
+            border: 1px solid #00c389;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        input, select, textarea { padding: 6px; border: 1px solid #ddd; width: 100%; }
+        label { display: block; margin: 8px 0 2px; font-weight: bold; }
+        .card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; background: #fff; border-radius: 6px; }
+        .page-wrap { padding: 18px; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'product_list' %}">Список товаров</a>
+    {% if user.is_authenticated %}
+        <span><strong>{{ user.username }}</strong> ({{ user.profile.get_role_display }})</span>
+        <a href="{% url 'order_list' %}">Заказы</a>
+        {% if user.profile.role == 'admin' %}
+            <a href="{% url 'manage_users' %}">Пользователи</a>
+        {% endif %}
+        <a href="{% url 'logout' %}">Выход</a>
+    {% else %}
+        <a href="{% url 'login' %}">Вход</a>
+        <a href="{% url 'register' %}">Регистрация</a>
+    {% endif %}
+</nav>
+<div class="page-wrap">
+{% block content %}{% endblock %}
+</div>
+</body>
+</html>
